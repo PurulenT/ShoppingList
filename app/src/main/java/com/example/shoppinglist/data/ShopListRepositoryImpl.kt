@@ -14,7 +14,7 @@ object ShopListRepositoryImpl: ShopListRepository{
     override fun getShopItem(id: Int): ShopItem {
         return shopList.find {
             it.id == id
-        } ?: throw Exception("null object")
+        } ?: throw RuntimeException("Element with id $id not found")
     }
 
     override fun editShopItem(shopItem: ShopItem) {
