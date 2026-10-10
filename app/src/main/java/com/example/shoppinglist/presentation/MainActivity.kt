@@ -18,10 +18,18 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        var count: Int = 0;
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.shopList.observe(this){
-            Log.d("MainActivity", it.toString())
+            Log.d("MainActivityLog", it.toString())
+            if(count == 0){
+                count++
+                viewModel.deleteShopItem(it[0])
+            }
+            if (count == 1){
+                count++
+                viewModel.changeEnableState(it[1])
+            }
         }
-        viewModel.getShopList()
     }
 }

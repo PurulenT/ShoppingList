@@ -1,22 +1,26 @@
 package com.example.shoppinglist.data
 
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.shoppinglist.domain.ShopItem
 import com.example.shoppinglist.domain.ShopListRepository
 
 object ShopListRepositoryImpl: ShopListRepository{
     private val shopList = mutableListOf<ShopItem>();
+    private val shopListLD = MutableLiveData<List<ShopItem>>()
     private var autoIncrementId = 0;
 
     init{
         for(i in 0 until 10){
             val item = ShopItem("item " + i, i, true)
-            shopList.add(item)
+            addShopItem(item)
         }
+
     }
 
-    override fun getShopList(): List<ShopItem> {
-        return shopList.toList();
+    override fun getShopList(): LiveData<List<ShopItem>> {
+        return shopListLD
     }
 
     override fun getShopItem(id: Int): ShopItem {
@@ -33,6 +37,7 @@ object ShopListRepositoryImpl: ShopListRepository{
 
     override fun deleteShopItem(shopItem: ShopItem) {
         shopList.remove(shopItem);
+        updateList()
     }
 
     override fun addShopItem(shopItem: ShopItem) {
@@ -40,5 +45,10 @@ object ShopListRepositoryImpl: ShopListRepository{
             shopItem.id = autoIncrementId++;
         }
         shopList.add(shopItem);
+        updateList()
+    }
+
+    private fun updateList(){
+        shopListLD.value = shopList.toList();
     }
 }
