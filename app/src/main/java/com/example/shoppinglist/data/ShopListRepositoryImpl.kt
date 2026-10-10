@@ -1,11 +1,19 @@
 package com.example.shoppinglist.data
 
+
 import com.example.shoppinglist.domain.ShopItem
 import com.example.shoppinglist.domain.ShopListRepository
 
 object ShopListRepositoryImpl: ShopListRepository{
     private val shopList = mutableListOf<ShopItem>();
     private var autoIncrementId = 0;
+
+    init{
+        for(i in 0 until 10){
+            val item = ShopItem("item " + i, i, true)
+            shopList.add(item)
+        }
+    }
 
     override fun getShopList(): List<ShopItem> {
         return shopList.toList();
